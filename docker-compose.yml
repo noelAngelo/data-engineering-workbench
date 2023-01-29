@@ -27,3 +27,15 @@ services:
     user: root
     environment:
       - SPARK_NO_DAEMONIZE=true
+
+  minio:
+    image: minio/minio
+    command: server --console-address ":9001" /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=hackme
+      - MINIO_ROOT_PASSWORD=becauseiforgottochangethepassword
+    volumes:
+      - ./data/minio:/data
