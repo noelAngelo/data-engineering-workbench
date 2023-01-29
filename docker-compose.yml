@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  spark:
+    build:
+      context: spark
+      dockerfile: Dockerfile
+      args:
+        SPARK_VERSION: v3.2.3
+    container_name: spark
+    entrypoint: ["./sbin/start-master.sh"]
+    user: root
+    environment:
+      - SPARK_MASTER_HOST=0.0.0.0
+    ports:
+      - "8080:8080"
+
+  spark-worker:
+    build:
+      context: spark
+      dockerfile: Dockerfile
+      args:
+        SPARK_VERSION: v3.2.3
+    container_name: spark-worker
+    entrypoint: ["./sbin/start-worker.sh", "spark://spark:7077"]
+    user: root
+    environment:
+      - SPARK_NO_DAEMONIZE=true
